@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module>
+  <rawname>shikem_connector</rawname>
+  <name>Shikem Connector</name>
+  <version>1.0.0</version>
+  <type>setup</type>
+  <category>Integration</category>
+  <description>
+    Connect your FreePBX system to Shikem for read-only access to extensions, call records, voicemail, and recordings.
+  </description>
+  <author>Shikem</author>
+  <license>MIT</license>
+  <permissionsroot>shikem_connector</permissionsroot>
+  <permissions>
+    <permission>
+      <name>Shikem Connector Settings</name>
+      <id>admin</id>
+    </permission>
+  </permissions>
+  <menuitems>
+    <menuitem>
+      <name>Shikem Connector</name>
+      <menu>Settings</menu>
+      <category>Integrations</category>
+      <href>config.php?display=shikem_connector</href>
+      <requires_module></requires_module>
+    </menuitem>
+  </menuitems>
+  <changelog>
+    <version>1.0.0</version>
+    <date>2026-06-02</date>
+    <author>Shikem</author>
+    <details>Initial release</details>
+  </changelog>
+</module>

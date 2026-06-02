@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module>
+  <rawname>shikem_connector</rawname>
+  <version>1.0.0</version>
+  <publisher>Shikem</publisher>
+  <license>MIT</license>
+  <licensetext>Copyright (c) 2026 Shikem. Licensed under MIT License.</licensetext>
+  <description>Shikem Connector for FreePBX</description>
+  <changelog>
+    1.0.0 - Initial Release
+  </changelog>
+  <depends>
+    <module>core ge 16.0</module>
+  </depends>
+  <location>https://github.com/aandrtechs/shikem-freepbx-connector</location>
+  <md5></md5>
+</module>

@@ -1,0 +1,18 @@
+# Local/runtime files
+.env
+*.local
+connector.conf
+*.token
+*.key
+*.pem
+
+# FreePBX/Asterisk runtime output
+*.log
+*.pid
+
+# Packages/build artifacts
+*.tar.gz
+*.tgz
+*.zip
+.DS_Store
+Thumbs.db
