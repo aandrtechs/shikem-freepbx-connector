@@ -24,7 +24,7 @@ Then enable the module in FreePBX:
 2. Go to Admin > Module Admin.
 3. Enable Shikem Connector.
 4. Open Settings > Shikem Connector.
-5. Enter the Shikem API URL plus the temporary username and password generated in Shikem.
+5. Enter the temporary username and password generated in Shikem. Leave the API URL as `https://shikem.com` for production, or change it to `https://test.shikem.com` when using staging credentials.
 
 ## Security Model
 
@@ -43,10 +43,8 @@ Then enable the module in FreePBX:
 
 ## Current Status
 
-This repository is a scaffold. It includes a FreePBX settings page at `Settings > Shikem Connector`, but the submit/sync actions are still placeholders. The Shikem backend endpoints and settings UI are implemented in the ARSMS application. The FreePBX module still needs full PHP implementation for:
+This repository is a scaffold. It includes a FreePBX settings page at `Settings > Shikem Connector`, and the temporary credential claim flow is implemented. The Shikem backend endpoints and settings UI are implemented in the ARSMS application. The FreePBX module still needs full PHP implementation for:
 
-- Claiming temporary credentials from the FreePBX admin UI
-- Persisting the permanent connector token
 - Sending scheduled heartbeats
 - Collecting read-only extension, CDR, voicemail, and recording data
 - Scheduling periodic syncs

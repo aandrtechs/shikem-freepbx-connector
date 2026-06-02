@@ -2,7 +2,7 @@
 <module>
   <rawname>shikem_connector</rawname>
   <name>Shikem Connector</name>
-  <version>1.0.1</version>
+  <version>1.0.2</version>
   <type>setup</type>
   <category>Settings</category>
   <description>
@@ -27,9 +27,9 @@
     </menuitem>
   </menuitems>
   <changelog>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <date>2026-06-02</date>
     <author>Shikem</author>
-    <details>Add FreePBX page entrypoint</details>
+    <details>Implement connector claim form</details>
   </changelog>
 </module>

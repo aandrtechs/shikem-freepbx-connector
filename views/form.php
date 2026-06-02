@@ -9,9 +9,25 @@ $status = $status ?? [
     'lastHeartbeat' => null,
 ];
 $isConnected = $status['status'] === 'connected';
+$settings = $settings ?? [];
+$flash = $flash ?? null;
+
+function shikem_connector_h($value) {
+    return htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
+}
 ?>
 
 <div class="container-fluid">
+  <?php if ($flash): ?>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="alert alert-<?php echo shikem_connector_h($flash['type'] ?? 'info'); ?>" role="alert">
+          <?php echo shikem_connector_h($flash['message'] ?? ''); ?>
+        </div>
+      </div>
+    </div>
+  <?php endif; ?>
+
   <div class="row">
     <div class="col-md-12">
       <div class="card">
@@ -20,8 +36,8 @@ $isConnected = $status['status'] === 'connected';
         </div>
         <div class="card-body">
           <div class="alert alert-<?php echo $isConnected ? 'success' : 'warning'; ?>" role="alert">
-            <strong><?php echo ucfirst($status['status']); ?>:</strong>
-            <?php echo $status['message']; ?>
+            <strong><?php echo shikem_connector_h(ucfirst($status['status'])); ?>:</strong>
+            <?php echo shikem_connector_h($status['message']); ?>
           </div>
         </div>
       </div>
@@ -38,7 +54,7 @@ $isConnected = $status['status'] === 'connected';
           <div class="card-body">
             <div class="form-group">
               <label for="shikem_api_url">Shikem API URL</label>
-              <input type="text" class="form-control" id="shikem_api_url" readonly value="[Configured]">
+              <input type="text" class="form-control" id="shikem_api_url" readonly value="<?php echo shikem_connector_h($settings['api_url'] ?? '[Configured]'); ?>">
             </div>
 
             <div class="form-group">
@@ -109,10 +125,11 @@ $isConnected = $status['status'] === 'connected';
             <p>Enter your Shikem API credentials below to connect this FreePBX system.</p>
 
             <form id="shikem_connect_form" method="post">
+              <input type="hidden" name="action" value="connect">
               <div class="form-group">
                 <label for="shikem_api_url">Shikem API URL</label>
                 <input type="url" class="form-control" id="shikem_api_url" name="shikem_api_url"
-                       placeholder="https://shikem.com" required>
+                       value="https://shikem.com" placeholder="https://shikem.com" required>
               </div>
 
               <div class="form-group">
@@ -133,11 +150,3 @@ $isConnected = $status['status'] === 'connected';
     </div>
   <?php endif; ?>
 </div>
-
-<script>
-document.getElementById('shikem_connect_form')?.addEventListener('submit', function(e) {
-  e.preventDefault();
-  // TODO: Implement connection flow
-  alert('Connection method not yet implemented');
-});
-</script>

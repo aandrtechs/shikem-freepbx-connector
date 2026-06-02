@@ -29,6 +29,7 @@ class ApiClient {
                     'Content-Type: application/json',
                 ],
                 'timeout' => 30,
+                'ignore_errors' => true,
             ],
         ];
 
@@ -44,13 +45,40 @@ class ApiClient {
 
         try {
             $response = file_get_contents($url, false, $context);
-            return json_decode($response, true);
-        } catch (\Exception $e) {
+            if ($response === false) {
+                $error = error_get_last();
+                return [
+                    'ok' => false,
+                    'error' => $error['message'] ?? 'HTTP request failed',
+                ];
+            }
+
+            $decoded = json_decode($response, true);
+            if (!is_array($decoded)) {
+                return [
+                    'ok' => false,
+                    'error' => 'Invalid JSON response from Shikem',
+                ];
+            }
+
+            return $decoded;
+        } catch (\Throwable $e) {
             return [
                 'ok' => false,
                 'error' => $e->getMessage(),
             ];
         }
+    }
+
+    /**
+     * Claim temporary Shikem credentials and receive a permanent connector token
+     */
+    public function claimConnection($tempUsername, $tempPassword, $pbxData) {
+        return $this->request('POST', '/api/customer/integrations/freepbx/claim', [
+            'tempUsername' => $tempUsername,
+            'tempPassword' => $tempPassword,
+            'pbxData' => $pbxData,
+        ], false);
     }
 
     /**
