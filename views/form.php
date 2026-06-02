@@ -3,7 +3,11 @@
  * Shikem Connector Settings Form
  */
 
-$status = $this->Module->getConnectionStatus();
+$status = $status ?? [
+    'status' => 'unconfigured',
+    'message' => 'Not yet connected to Shikem',
+    'lastHeartbeat' => null,
+];
 $isConnected = $status['status'] === 'connected';
 ?>
 

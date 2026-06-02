@@ -2,17 +2,28 @@
 <module>
   <rawname>shikem_connector</rawname>
   <name>Shikem Connector</name>
-  <version>1.0.0</version>
+  <version>1.0.1</version>
+  <type>setup</type>
+  <category>Settings</category>
   <publisher>Shikem</publisher>
   <license>MIT</license>
   <licensetext>Copyright (c) 2026 Shikem. Licensed under MIT License.</licensetext>
   <description>Shikem Connector for FreePBX</description>
+  <candisable>yes</candisable>
+  <canuninstall>yes</canuninstall>
   <changelog>
+    1.0.1 - Add FreePBX page entrypoint
     1.0.0 - Initial Release
   </changelog>
+  <menuitems>
+    <shikem_connector>Shikem Connector</shikem_connector>
+  </menuitems>
   <depends>
-    <module>core ge 16.0</module>
+    <version>16.0</version>
   </depends>
+  <requirements>
+    <module>core</module>
+  </requirements>
   <location>https://github.com/aandrtechs/shikem-freepbx-connector</location>
   <md5></md5>
 </module>

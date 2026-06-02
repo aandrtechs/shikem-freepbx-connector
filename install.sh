@@ -24,6 +24,7 @@ mkdir -p "$MODULE_DIR/agi-bin"
 echo "Copying files..."
 cp -v manifest.xml "$MODULE_DIR/"
 cp -v module.xml "$MODULE_DIR/"
+cp -v page.shikem_connector.php "$MODULE_DIR/"
 cp -v Shikem_Connector.module.php "$MODULE_DIR/"
 cp -v views/* "$MODULE_DIR/views/" 2>/dev/null || true
 cp -v lib/* "$MODULE_DIR/lib/" 2>/dev/null || true
