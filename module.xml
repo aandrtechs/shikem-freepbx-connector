@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module>
   <rawname>shikem_connector</rawname>
+  <name>Shikem Connector</name>
   <version>1.0.0</version>
   <publisher>Shikem</publisher>
   <license>MIT</license>
