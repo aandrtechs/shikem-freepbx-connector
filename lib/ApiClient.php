@@ -93,50 +93,42 @@ class ApiClient {
     }
 
     /**
-     * Sync extensions to Shikem
+     * Sync any supported Shikem FreePBX data type
      */
-    public function syncExtensions($serverUuid, $extensions) {
+    public function syncData($serverUuid, $syncType, $data) {
         return $this->request('POST', '/api/customer/integrations/freepbx/sync', [
             'connectorToken' => $this->connectorToken,
             'serverUuid' => $serverUuid,
-            'syncType' => 'extensions',
-            'data' => $extensions,
+            'syncType' => $syncType,
+            'data' => $data,
         ], false);
+    }
+
+    /**
+     * Sync extensions to Shikem
+     */
+    public function syncExtensions($serverUuid, $extensions) {
+        return $this->syncData($serverUuid, 'extensions', $extensions);
     }
 
     /**
      * Sync CDR to Shikem
      */
     public function syncCDR($serverUuid, $cdrRecords) {
-        return $this->request('POST', '/api/customer/integrations/freepbx/sync', [
-            'connectorToken' => $this->connectorToken,
-            'serverUuid' => $serverUuid,
-            'syncType' => 'cdr',
-            'data' => $cdrRecords,
-        ], false);
+        return $this->syncData($serverUuid, 'cdr', $cdrRecords);
     }
 
     /**
      * Sync voicemail to Shikem
      */
     public function syncVoicemail($serverUuid, $voicemailData) {
-        return $this->request('POST', '/api/customer/integrations/freepbx/sync', [
-            'connectorToken' => $this->connectorToken,
-            'serverUuid' => $serverUuid,
-            'syncType' => 'voicemail',
-            'data' => $voicemailData,
-        ], false);
+        return $this->syncData($serverUuid, 'voicemail', $voicemailData);
     }
 
     /**
      * Sync recordings to Shikem
      */
     public function syncRecordings($serverUuid, $recordingData) {
-        return $this->request('POST', '/api/customer/integrations/freepbx/sync', [
-            'connectorToken' => $this->connectorToken,
-            'serverUuid' => $serverUuid,
-            'syncType' => 'recordings',
-            'data' => $recordingData,
-        ], false);
+        return $this->syncData($serverUuid, 'recordings', $recordingData);
     }
 }

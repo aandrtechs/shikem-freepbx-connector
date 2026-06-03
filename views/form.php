@@ -15,6 +15,14 @@ $flash = $flash ?? null;
 function shikem_connector_h($value) {
     return htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
 }
+
+function shikem_connector_sync_value($settings, $type, $field, $fallback = null) {
+    return $settings['last_sync'][$type][$field] ?? $fallback;
+}
+
+function shikem_connector_format_time($timestamp) {
+    return $timestamp ? date('Y-m-d H:i:s T', (int) $timestamp) : 'Never';
+}
 ?>
 
 <div class="container-fluid">
@@ -64,7 +72,10 @@ function shikem_connector_h($value) {
               </select>
             </div>
 
-            <button type="button" class="btn btn-primary">Sync Now</button>
+            <form method="post" style="display:inline">
+              <input type="hidden" name="action" value="sync_all">
+              <button type="submit" class="btn btn-primary">Sync Now</button>
+            </form>
             <button type="button" class="btn btn-warning">Rotate Token</button>
             <button type="button" class="btn btn-danger">Disconnect</button>
           </div>
@@ -90,23 +101,23 @@ function shikem_connector_h($value) {
               <tbody>
                 <tr>
                   <td>Extensions</td>
-                  <td id="last_sync_extensions">Never</td>
-                  <td><span class="badge badge-secondary">Pending</span></td>
+                  <td id="last_sync_extensions"><?php echo shikem_connector_h(shikem_connector_format_time(shikem_connector_sync_value($settings, 'extensions', 'timestamp'))); ?></td>
+                  <td><span class="badge badge-<?php echo shikem_connector_sync_value($settings, 'extensions', 'success') ? 'success' : 'secondary'; ?>"><?php echo shikem_connector_sync_value($settings, 'extensions', 'success') ? 'Synced' : 'Pending'; ?></span></td>
                 </tr>
                 <tr>
                   <td>Call Records (CDR)</td>
-                  <td id="last_sync_cdr">Never</td>
-                  <td><span class="badge badge-secondary">Pending</span></td>
+                  <td id="last_sync_cdr"><?php echo shikem_connector_h(shikem_connector_format_time(shikem_connector_sync_value($settings, 'cdr', 'timestamp'))); ?></td>
+                  <td><span class="badge badge-<?php echo shikem_connector_sync_value($settings, 'cdr', 'success') ? 'success' : 'secondary'; ?>"><?php echo shikem_connector_sync_value($settings, 'cdr', 'success') ? 'Synced' : 'Pending'; ?></span></td>
                 </tr>
                 <tr>
                   <td>Voicemail</td>
-                  <td id="last_sync_voicemail">Never</td>
-                  <td><span class="badge badge-secondary">Pending</span></td>
+                  <td id="last_sync_voicemail"><?php echo shikem_connector_h(shikem_connector_format_time(shikem_connector_sync_value($settings, 'voicemail', 'timestamp'))); ?></td>
+                  <td><span class="badge badge-<?php echo shikem_connector_sync_value($settings, 'voicemail', 'success') ? 'success' : 'secondary'; ?>"><?php echo shikem_connector_sync_value($settings, 'voicemail', 'success') ? 'Synced' : 'Pending'; ?></span></td>
                 </tr>
                 <tr>
                   <td>Recordings</td>
-                  <td id="last_sync_recordings">Never</td>
-                  <td><span class="badge badge-secondary">Pending</span></td>
+                  <td id="last_sync_recordings"><?php echo shikem_connector_h(shikem_connector_format_time(shikem_connector_sync_value($settings, 'recordings', 'timestamp'))); ?></td>
+                  <td><span class="badge badge-<?php echo shikem_connector_sync_value($settings, 'recordings', 'success') ? 'success' : 'secondary'; ?>"><?php echo shikem_connector_sync_value($settings, 'recordings', 'success') ? 'Synced' : 'Pending'; ?></span></td>
                 </tr>
               </tbody>
             </table>

@@ -2,7 +2,7 @@
 <module>
   <rawname>shikem_connector</rawname>
   <name>Shikem Connector</name>
-  <version>1.0.2</version>
+  <version>1.0.3</version>
   <type>setup</type>
   <category>Settings</category>
   <description>
@@ -27,9 +27,9 @@
     </menuitem>
   </menuitems>
   <changelog>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
     <date>2026-06-02</date>
     <author>Shikem</author>
-    <details>Implement connector claim form</details>
+    <details>Add read-only PBX data collector and manual sync</details>
   </changelog>
 </module>

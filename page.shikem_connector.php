@@ -9,9 +9,12 @@ if (!defined('FREEPBX_IS_AUTH')) {
 
 require_once __DIR__ . '/lib/StorageManager.php';
 require_once __DIR__ . '/lib/ApiClient.php';
+require_once __DIR__ . '/lib/DataCollector.php';
 
 $storageManager = new \Shikem\StorageManager();
 $flash = null;
+
+global $db, $cdrdb;
 
 function shikem_connector_value($key) {
     return isset($_POST[$key]) && is_string($_POST[$key]) ? trim($_POST[$key]) : '';
@@ -48,8 +51,63 @@ function shikem_connector_pbx_data($storageManager) {
         'localIp' => $_SERVER['SERVER_ADDR'] ?? null,
         'freepbxVersion' => $freepbxVersion ?: 'unknown',
         'asteriskVersion' => $asteriskVersion ?: 'unknown',
-        'moduleVersion' => '1.0.2',
+        'moduleVersion' => '1.0.3',
         'serverUuid' => $storageManager->getServerUUID(),
+    ];
+}
+
+function shikem_connector_sync_all($storageManager, $db, $cdrdb) {
+    $settings = $storageManager->loadSettings();
+    if (empty($settings['api_url']) || empty($settings['connector_token']) || empty($settings['server_uuid'])) {
+        return [
+            'success' => false,
+            'message' => 'Connector settings are incomplete. Reconnect to Shikem first.',
+            'results' => [],
+        ];
+    }
+
+    $collector = new \Shikem\DataCollector($db, $cdrdb);
+    $payload = $collector->collectAll();
+    $client = new \Shikem\ApiClient($settings['api_url'], $settings['connector_token']);
+    $serverUuid = $settings['server_uuid'];
+    $results = [];
+    $success = true;
+
+    $heartbeat = $client->sendHeartbeat($serverUuid, [
+        'hostname' => $settings['hostname'] ?? php_uname('n'),
+        'publicIp' => $settings['public_ip'] ?? null,
+        'moduleVersion' => '1.0.3',
+    ]);
+    $results['heartbeat'] = $heartbeat;
+    if (empty($heartbeat['ok'])) {
+        $success = false;
+    }
+
+    foreach (['extensions', 'cdr', 'voicemail', 'recordings'] as $syncType) {
+        $result = $client->syncData($serverUuid, $syncType, $payload[$syncType]);
+        $results[$syncType] = $result;
+        if (empty($result['ok'])) {
+            $success = false;
+        }
+    }
+
+    $settings['last_sync'] = $settings['last_sync'] ?? [];
+    foreach (['extensions', 'cdr', 'voicemail', 'recordings'] as $syncType) {
+        $settings['last_sync'][$syncType] = [
+            'timestamp' => time(),
+            'success' => !empty($results[$syncType]['ok']),
+            'message' => $results[$syncType]['error'] ?? null,
+            'records' => $results[$syncType]['data']['recordsProcessed'] ?? null,
+        ];
+    }
+    $settings['last_inventory_summary'] = $collector->summarize($payload['inventory']);
+    $settings['last_sync_summary'] = $collector->summarize($payload);
+    $storageManager->saveSettings($settings);
+
+    return [
+        'success' => $success,
+        'message' => $success ? 'PBX data synced to Shikem.' : 'Some PBX data failed to sync. Check the sync status table.',
+        'results' => $results,
     ];
 }
 
@@ -92,6 +150,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && shikem_connector_value('action') ==
             ];
         }
     }
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && shikem_connector_value('action') === 'sync_all') {
+    $syncResult = shikem_connector_sync_all($storageManager, $db ?? null, $cdrdb ?? null);
+    $flash = [
+        'type' => !empty($syncResult['success']) ? 'success' : 'warning',
+        'message' => $syncResult['message'],
+    ];
 }
 
 $settings = $storageManager->loadSettings();
