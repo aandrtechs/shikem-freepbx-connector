@@ -33,6 +33,7 @@ Then enable the module in FreePBX:
 - The permanent connector token is returned once by Shikem and must be stored on the PBX.
 - Shikem stores only a hash of the permanent connector token.
 - Connector calls authenticate with `Authorization: Bearer <connectorToken>`.
+- The permanent token is never duplicated into a JSON request body.
 - The connector is intended to be read-only.
 
 ## API Endpoints
@@ -72,4 +73,4 @@ The Shikem backend endpoints and settings UI are implemented in the ARSMS applic
 
 ## Version
 
-Initial scaffold: 2026-06-02
+Secure bearer-token transport update: 2026-07-30

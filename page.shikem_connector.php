@@ -51,7 +51,7 @@ function shikem_connector_pbx_data($storageManager) {
         'localIp' => $_SERVER['SERVER_ADDR'] ?? null,
         'freepbxVersion' => $freepbxVersion ?: 'unknown',
         'asteriskVersion' => $asteriskVersion ?: 'unknown',
-        'moduleVersion' => '1.0.3',
+        'moduleVersion' => '1.0.4',
         'serverUuid' => $storageManager->getServerUUID(),
     ];
 }
@@ -76,7 +76,7 @@ function shikem_connector_sync_all($storageManager, $db, $cdrdb) {
     $heartbeat = $client->sendHeartbeat($serverUuid, [
         'hostname' => $settings['hostname'] ?? php_uname('n'),
         'publicIp' => $settings['public_ip'] ?? null,
-        'moduleVersion' => '1.0.3',
+        'moduleVersion' => '1.0.4',
     ]);
     $results['heartbeat'] = $heartbeat;
     if (empty($heartbeat['ok'])) {
