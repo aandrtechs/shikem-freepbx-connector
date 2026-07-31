@@ -2,7 +2,7 @@
 <module>
   <rawname>shikem_connector</rawname>
   <name>Shikem Connector</name>
-  <version>1.0.3</version>
+  <version>1.0.4</version>
   <type>setup</type>
   <category>Settings</category>
   <description>
@@ -27,9 +27,9 @@
     </menuitem>
   </menuitems>
   <changelog>
-    <version>1.0.3</version>
-    <date>2026-06-02</date>
+    <version>1.0.4</version>
+    <date>2026-07-30</date>
     <author>Shikem</author>
-    <details>Add read-only PBX data collector and manual sync</details>
+    <details>Send permanent connector credentials only as Authorization bearer tokens</details>
   </changelog>
 </module>

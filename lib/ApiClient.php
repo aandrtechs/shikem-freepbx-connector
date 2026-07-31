@@ -86,10 +86,9 @@ class ApiClient {
      */
     public function sendHeartbeat($serverUuid, $pbxData) {
         return $this->request('POST', '/api/customer/integrations/freepbx/heartbeat', [
-            'connectorToken' => $this->connectorToken,
             'serverUuid' => $serverUuid,
             'pbxData' => $pbxData,
-        ], false);
+        ]);
     }
 
     /**
@@ -97,11 +96,10 @@ class ApiClient {
      */
     public function syncData($serverUuid, $syncType, $data) {
         return $this->request('POST', '/api/customer/integrations/freepbx/sync', [
-            'connectorToken' => $this->connectorToken,
             'serverUuid' => $serverUuid,
             'syncType' => $syncType,
             'data' => $data,
-        ], false);
+        ]);
     }
 
     /**
